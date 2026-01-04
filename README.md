@@ -2,6 +2,8 @@
 
 A complete, production-ready solar panel quote calculator built for Django web applications.
 
+> **📦 Repository Migration:** To copy this repository to SolarEngine, see **[COPY_INSTRUCTIONS.md](COPY_INSTRUCTIONS.md)** or **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** for detailed instructions.
+
 ## 🌟 Features
 
 - Interactive solar quote calculator
