@@ -1,1 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Quote Engine - Get Your Free Solar Estimate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-item h3 {
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .savings-highlight {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border-left-color: #11998e;
+        }
+
+        .savings-highlight h3,
+        .savings-highlight .result-description {
+            color: white;
+        }
+
+        .environmental-impact {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .impact-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .impact-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #11998e;
+            margin-bottom: 5px;
+        }
+
+        .impact-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+            opacity: 0.9;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .environmental-impact {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            margin-left: 5px;
+            cursor: help;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☀️ Solar Quote Engine</h1>
+            <p>Calculate your solar savings and get a free estimate in seconds</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>Your Information</h2>
+                <form id="solarForm">
+                    <div class="form-group">
+                        <label for="zipCode">ZIP Code / Location</label>
+                        <input type="text" id="zipCode" placeholder="Enter your ZIP code" required>
+                        <div class="input-hint">Used to estimate solar potential in your area</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="monthlyBill">Average Monthly Electricity Bill ($)</label>
+                        <input type="number" id="monthlyBill" placeholder="150" min="0" step="1" required>
+                        <div class="input-hint">Your typical monthly electricity cost</div>
+                        <div class="error" id="billError">Please enter a valid amount</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roofSize">Estimated Roof Size (sq ft)</label>
+                        <input type="number" id="roofSize" placeholder="1500" min="0" step="50" required>
+                        <div class="input-hint">Approximate usable roof space for panels</div>
+                        <div class="error" id="roofError">Please enter a valid roof size</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roofType">Roof Type</label>
+                        <select id="roofType" required>
+                            <option value="asphalt">Asphalt Shingles</option>
+                            <option value="metal">Metal</option>
+                            <option value="tile">Tile</option>
+                            <option value="flat">Flat</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sunExposure">Sun Exposure</label>
+                        <select id="sunExposure" required>
+                            <option value="excellent">Excellent (Full sun all day)</option>
+                            <option value="good">Good (6-8 hours)</option>
+                            <option value="moderate">Moderate (4-6 hours)</option>
+                            <option value="limited">Limited (Less than 4 hours)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="electricityRate">Electricity Rate ($/kWh)</label>
+                        <input type="number" id="electricityRate" placeholder="0.13" min="0" step="0.01" value="0.13" required>
+                        <div class="input-hint">Check your utility bill for your rate</div>
+                    </div>
+
+                    <button type="submit">Calculate My Solar Quote 🌞</button>
+                </form>
+            </div>
+
+            <div class="card results" id="resultsCard">
+                <h2>Your Solar Quote</h2>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>💡 Start saving with solar energy today! Contact us for a detailed consultation.</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">© 2024 Solar Quote Engine. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('solarForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(el => el.classList.remove('show'));
+            
+            // Get form values
+            const zipCode = document.getElementById('zipCode').value;
+            const monthlyBill = parseFloat(document.getElementById('monthlyBill').value);
+            const roofSize = parseFloat(document.getElementById('roofSize').value);
+            const roofType = document.getElementById('roofType').value;
+            const sunExposure = document.getElementById('sunExposure').value;
+            const electricityRate = parseFloat(document.getElementById('electricityRate').value);
+            
+            // Validate inputs
+            let isValid = true;
+            
+            if (monthlyBill <= 0 || isNaN(monthlyBill)) {
+                document.getElementById('billError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (roofSize <= 0 || isNaN(roofSize)) {
+                document.getElementById('roofError').classList.add('show');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Calculate solar system specifications
+            const annualConsumption = (monthlyBill / electricityRate) * 12; // kWh per year
+            
+            // Sun exposure multiplier
+            const sunMultipliers = {
+                'excellent': 1.0,
+                'good': 0.85,
+                'moderate': 0.7,
+                'limited': 0.5
+            };
+            
+            const sunMultiplier = sunMultipliers[sunExposure];
+            
+            // Calculate system size (typical panel produces 1.5 kW per 100 sq ft)
+            const maxSystemSize = (roofSize / 100) * 1.5 * sunMultiplier;
+            
+            // Typical solar panel produces ~1,200 kWh per kW per year (sun multiplier already in system size)
+            const estimatedProduction = maxSystemSize * 1200;
+            
+            // Calculate what percentage of consumption can be covered
+            const coveragePercent = Math.min((estimatedProduction / annualConsumption) * 100, 100);
+            
+            // Cost calculations ($3 per watt is typical)
+            const systemCostPerWatt = 3.0;
+            const systemCost = maxSystemSize * 1000 * systemCostPerWatt;
+            
+            // Federal tax credit (30%)
+            const taxCredit = systemCost * 0.30;
+            const netCost = systemCost - taxCredit;
+            
+            // Annual savings
+            const annualSavings = (estimatedProduction * electricityRate) * (coveragePercent / 100);
+            
+            // Payback period
+            const paybackYears = netCost / annualSavings;
+            
+            // 25-year savings
+            const lifetimeSavings = (annualSavings * 25) - netCost;
+            
+            // Environmental impact
+            const co2Offset = estimatedProduction * 0.92; // lbs per year (0.92 lbs CO2 per kWh)
+            const treesEquivalent = Math.round(co2Offset / 48); // One tree absorbs ~48 lbs CO2/year
+            const carsOffRoad = (co2Offset / 9000).toFixed(2); // Average car emits ~9000 lbs CO2/year
+            
+            // Display results
+            const resultsHTML = `
+                <div class="result-item">
+                    <h3>Recommended System Size</h3>
+                    <div class="result-value">${maxSystemSize.toFixed(2)} kW</div>
+                    <div class="result-description">${Math.round(maxSystemSize * 3)} solar panels (approx.)</div>
+                </div>
+                
+                <div class="result-item">
+                    <h3>Estimated Annual Production</h3>
+                    <div class="result-value">${estimatedProduction.toFixed(0)} kWh</div>
+                    <div class="result-description">Covers ${coveragePercent.toFixed(0)}% of your electricity needs</div>
+                </div>
+                
+                <div class="result-item">
+                    <h3>System Cost</h3>
+                    <div class="result-value">$${systemCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                    <div class="result-description">Before incentives</div>
+                </div>
+                
+                <div class="result-item">
+                    <h3>Federal Tax Credit (30%)</h3>
+                    <div class="result-value">-$${taxCredit.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                    <div class="result-description">Net cost: $${netCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                </div>
+                
+                <div class="result-item savings-highlight">
+                    <h3>Annual Savings</h3>
+                    <div class="result-value">$${annualSavings.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                    <div class="result-description">Payback period: ${paybackYears.toFixed(1)} years</div>
+                </div>
+                
+                <div class="result-item savings-highlight">
+                    <h3>25-Year Lifetime Savings</h3>
+                    <div class="result-value">$${lifetimeSavings.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                    <div class="result-description">Total savings after system pays for itself</div>
+                </div>
+                
+                <div class="result-item">
+                    <h3>Environmental Impact</h3>
+                    <div class="environmental-impact">
+                        <div class="impact-item">
+                            <div class="impact-value">${co2Offset.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                            <div class="impact-label">lbs CO₂ offset/year</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-value">${treesEquivalent}</div>
+                            <div class="impact-label">trees planted equivalent</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-value">${carsOffRoad}</div>
+                            <div class="impact-label">cars off road/year</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-value">${(estimatedProduction * 25 / 1000).toFixed(1)}</div>
+                            <div class="impact-label">MWh clean energy (25yr)</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('resultsContent').innerHTML = resultsHTML;
+            document.getElementById('resultsCard').classList.add('show');
+            
+            // Smooth scroll to results
+            document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    </script>
+</body>
+</html>
