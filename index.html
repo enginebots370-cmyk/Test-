@@ -365,8 +365,8 @@
             // Calculate system size (typical panel produces 1.5 kW per 100 sq ft)
             const maxSystemSize = (roofSize / 100) * 1.5 * sunMultiplier;
             
-            // Typical solar panel produces ~1,200 kWh per kW per year (adjusted for location)
-            const estimatedProduction = maxSystemSize * 1200 * sunMultiplier;
+            // Typical solar panel produces ~1,200 kWh per kW per year (sun multiplier already in system size)
+            const estimatedProduction = maxSystemSize * 1200;
             
             // Calculate what percentage of consumption can be covered
             const coveragePercent = Math.min((estimatedProduction / annualConsumption) * 100, 100);

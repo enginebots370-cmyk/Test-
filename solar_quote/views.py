@@ -45,8 +45,8 @@ def calculate_quote(request):
         # Calculate system size (typical panel produces 1.5 kW per 100 sq ft)
         max_system_size = (roof_size / 100) * 1.5 * sun_multiplier
         
-        # Typical solar panel produces ~1,200 kWh per kW per year
-        estimated_production = max_system_size * 1200 * sun_multiplier
+        # Typical solar panel produces ~1,200 kWh per kW per year (sun multiplier already in system size)
+        estimated_production = max_system_size * 1200
         
         # Calculate coverage percentage
         coverage_percent = min((estimated_production / annual_consumption) * 100, 100)

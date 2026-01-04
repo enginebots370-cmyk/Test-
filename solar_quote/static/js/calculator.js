@@ -97,7 +97,7 @@ function calculateClientSide(data) {
     
     const sunMultiplier = sunMultipliers[data.sunExposure];
     const maxSystemSize = (data.roofSize / 100) * 1.5 * sunMultiplier;
-    const estimatedProduction = maxSystemSize * 1200 * sunMultiplier;
+    const estimatedProduction = maxSystemSize * 1200;  // Sun multiplier already in system size
     const coveragePercent = Math.min((estimatedProduction / annualConsumption) * 100, 100);
     const systemCost = maxSystemSize * 1000 * 3.0;
     const taxCredit = systemCost * 0.30;
