@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Quote Engine - Get Your Free Solar Estimate</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☀️ Solar Quote Engine</h1>
+            <p>Calculate your solar savings and get a free estimate in seconds</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>Your Information</h2>
+                <form id="solarForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="zipCode">ZIP Code / Location</label>
+                        <input type="text" id="zipCode" name="zipCode" placeholder="Enter your ZIP code" required>
+                        <div class="input-hint">Used to estimate solar potential in your area</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="monthlyBill">Average Monthly Electricity Bill ($)</label>
+                        <input type="number" id="monthlyBill" name="monthlyBill" placeholder="150" min="0" step="1" required>
+                        <div class="input-hint">Your typical monthly electricity cost</div>
+                        <div class="error" id="billError">Please enter a valid amount</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roofSize">Estimated Roof Size (sq ft)</label>
+                        <input type="number" id="roofSize" name="roofSize" placeholder="1500" min="0" step="50" required>
+                        <div class="input-hint">Approximate usable roof space for panels</div>
+                        <div class="error" id="roofError">Please enter a valid roof size</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roofType">Roof Type</label>
+                        <select id="roofType" name="roofType" required>
+                            <option value="asphalt">Asphalt Shingles</option>
+                            <option value="metal">Metal</option>
+                            <option value="tile">Tile</option>
+                            <option value="flat">Flat</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sunExposure">Sun Exposure</label>
+                        <select id="sunExposure" name="sunExposure" required>
+                            <option value="excellent">Excellent (Full sun all day)</option>
+                            <option value="good">Good (6-8 hours)</option>
+                            <option value="moderate">Moderate (4-6 hours)</option>
+                            <option value="limited">Limited (Less than 4 hours)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="electricityRate">Electricity Rate ($/kWh)</label>
+                        <input type="number" id="electricityRate" name="electricityRate" placeholder="0.13" min="0" step="0.01" value="0.13" required>
+                        <div class="input-hint">Check your utility bill for your rate</div>
+                    </div>
+
+                    <button type="submit" class="btn-calculate">Calculate My Solar Quote 🌞</button>
+                </form>
+                
+                <div class="loading">
+                    <p>Calculating your solar quote...</p>
+                </div>
+            </div>
+
+            <div class="card results" id="resultsCard">
+                <h2>Your Solar Quote</h2>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>💡 Start saving with solar energy today! Contact us for a detailed consultation.</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">© 2024 Solar Quote Engine. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="{% static 'js/calculator.js' %}"></script>
+</body>
+</html>
